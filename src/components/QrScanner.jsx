@@ -1,28 +1,32 @@
-import { Html5QrcodeScanner } from "html5-qrcode"
+import { Html5Qrcode } from "html5-qrcode"
 import { useEffect } from "react"
 
 const QrScanner = ({ onScan }) => {
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      { fps: 10, qrbox: 250 }
-    )
+    const html5QrCode = new Html5Qrcode("reader")
 
-    scanner.render(
+    html5QrCode.start(
+      { facingMode: "environment" }, // cámara trasera
+      { fps: 10, qrbox: 250 },
       (decodedText) => {
+        console.log("QR detectado:", decodedText)
         onScan(decodedText)
-        scanner.clear()
+        html5QrCode.stop()
       },
       () => {}
     )
 
     return () => {
-      scanner.clear().catch(() => {})
+      html5QrCode.stop().catch(() => {})
     }
   }, [])
 
-  return <div id="reader" />
+  return (
+    <div>
+      <div id="reader" style={{ width: "300px" }}></div>
+    </div>
+  )
 }
 
 export default QrScanner
