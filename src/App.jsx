@@ -1,14 +1,16 @@
 import { Routes, Route } from 'react-router-dom'
 import Scanner from './pages/Scanner'
 import Equipos from './pages/Equipos'
+import BarcodeScanner from "./components/BarcodeScanner"
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Scanner />} />
-      <Route path="/equipos" element={<Equipos />} />
-    </Routes>
-  )
+  const handleScan = (imei) => {
+    alert("IMEI detectado: " + imei)
+  }
+
+  return <BarcodeScanner onScan={handleScan} />
 }
 
 export default App
+
+
