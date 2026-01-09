@@ -10,31 +10,29 @@ const QrScanner = ({ onScan }) => {
       { facingMode: "environment" },
       {
         fps: 10,
-        qrbox: 300,
-        // 👇 CLAVE: aceptar más formatos
-        formatsToSupport: [
-          Html5Qrcode.FORMATS.QR_CODE,
-          Html5Qrcode.FORMATS.CODE_128,
-          Html5Qrcode.FORMATS.CODE_39,
-          Html5Qrcode.FORMATS.EAN_13,
-          Html5Qrcode.FORMATS.EAN_8,
-          Html5Qrcode.FORMATS.DATA_MATRIX
-        ]
+        qrbox: { width: 250, height: 250 }
       },
       (decodedText) => {
-        console.log("Código detectado:", decodedText)
+        console.log("QR detectado:", decodedText)
         onScan(decodedText)
         html5QrCode.stop()
       },
       () => {}
-    )
+    ).catch(err => {
+      console.error("Error iniciando cámara:", err)
+    })
 
     return () => {
       html5QrCode.stop().catch(() => {})
     }
   }, [])
 
-  return <div id="reader" style={{ width: "320px" }} />
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Escanear código</h2>
+      <div id="reader" style={{ width: "300px" }} />
+    </div>
+  )
 }
 
 export default QrScanner
